@@ -1,0 +1,54 @@
+#background
+{
+    width: 400px;
+    height: 30px;
+    margin: 1px auto;
+}
+
+#message
+{
+    background-color: pink;
+    font-size: 14px;
+    margin: 5px auto;
+    text-align: left;
+}
+
+#report
+{
+    font-size: 14px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+#loading
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#progressbar
+{
+    text-align: center;
+    margin: 15px auto;
+}
+
+.month, .centerData
+{
+    text-align: center;
+}
+
+.leftData
+{
+    text-align: right;
+}
+
+.tableHeader
+{
+    background-color: orange;
+}
+
+.yearSum
+{
+    background-color: orange;
+}
