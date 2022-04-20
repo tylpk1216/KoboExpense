@@ -169,7 +169,7 @@ function processReport(items) {
     $progressBar.text('');
 }
 
-chrome.runtime.onMessage.addListener(function(request, sender) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action == "getSource") {
         if (Array.isArray(request.source)) {
             processReport(request.source);
@@ -179,6 +179,7 @@ chrome.runtime.onMessage.addListener(function(request, sender) {
     } else if (request.action == "progress") {
         $progressBar.text(request.source);
     }
+    sendResponse();
 });
 
 window.onload = onWindowLoad;
