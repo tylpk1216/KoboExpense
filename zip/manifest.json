@@ -6,7 +6,7 @@
     "background": {
         "service_worker": "js/background.js"
     },
-    "permissions": ["declarativeContent", "activeTab", "tabs", "scripting"],
+    "permissions": ["declarativeContent", "activeTab", "scripting"],
     "action": {
         "default_popup": "html/popup.html",
         "default_icon": {
