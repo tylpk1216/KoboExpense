@@ -71,7 +71,7 @@ function parseHTML(source) {
     let dates = [];
     let prices = [];
 
-    let regexDate = /kb_orderDate\">\n\s+([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})/g;
+    let regexDate = /kb_orderDate\">\s+([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})/g;
     while((info = regexDate.exec(source)) != null) {
         let y = info[1];
         let m = info[2];
@@ -83,7 +83,7 @@ function parseHTML(source) {
         dates.push(`${y}-${m}-${d}`);
     }
 
-    let regexPrice = /kb_orderPrice\">\n\s+.*\$(.*)\n/g;
+    let regexPrice = /kb_orderPrice\">\s+.*\$(.*)\s+/g;
     while((info = regexPrice.exec(source)) != null) {
         prices.push(parseInt(info[1].replaceAll(',', '')));
     }
