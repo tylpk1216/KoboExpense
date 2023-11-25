@@ -10,8 +10,8 @@ function processData(source) {
     records = [];
 
     // itemsPerPage
-    //<option selected="selected" value="100">100</option>
-    let regexItems = /<option selected=\"selected\" value=\"(\d+)\">.*<\/option>/g;
+    //<span>顯示： </span><span translate="no">10</span>
+    let regexItems = /<span>顯示： <\/span><span translate=\"no\">(\d+)<\/span>/g;
     while((info = regexItems.exec(source)) != null) {
         itemsPerPage = parseInt(info[1]);
         console.log('in regex loop', itemsPerPage);
@@ -19,16 +19,15 @@ function processData(source) {
     console.log('final itemsPerPage', itemsPerPage);
 
     // totalPage
-    // id="Input_PurchaseHistoryPage" max="14"
-    let regexPage = /id=\"Input_PurchaseHistoryPage\" max=\"(\d*)\"/g;
+    //<a href="/tw/zh/purchasehistory?pageNumber=24" class="page-link final">24</a>
+    let regexPage = /class=\"page-link final\">(\d*)<\/a>/g;
     while((info = regexPage.exec(source)) != null) {
         totalPage = parseInt(info[1]);
         console.log('in regex loop', totalPage);
     }
     console.log('final totalPage', totalPage);
-
-    // profile
-    // historyPurchasesViewService: "/90312/Profile/HistoryPurchasesView",
+    
+    // It isn't used now, just keep it.
     let regexProfile = /historyPurchasesViewService: \"\/(\d*)\/Profile\/HistoryPurchasesView\",/g;
     while((info = regexProfile.exec(source)) != null) {
         profileID = parseInt(info[1]);
@@ -36,7 +35,7 @@ function processData(source) {
     }
     console.log('final profileID', profileID);
 
-    if (itemsPerPage == -1 || totalPage == -1 || profileID == -1) {
+    if (itemsPerPage == -1 || totalPage == -1) {
         sendResultMessage('Kobo HTML changed');
         return;
     }
@@ -70,8 +69,9 @@ function parseHTML(source) {
 
     let dates = [];
     let prices = [];
-
-    let regexDate = /kb_orderDate\">\s+([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})/g;
+    
+    //<span class="purchase-item-title" translate="no">2023/4/14</span>
+    let regexDate = /<span class=\"purchase-item-title\" translate=\"no\">([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})<\/span>/g;
     while((info = regexDate.exec(source)) != null) {
         let y = info[1];
         let m = info[2];
@@ -82,11 +82,15 @@ function parseHTML(source) {
 
         dates.push(`${y}-${m}-${d}`);
     }
-
-    let regexPrice = /kb_orderPrice\">\s+.*\$(.*)\s+/g;
+    
+    //<span class="purchase-item-title" translate="no">NT$99</span>
+    let regexPrice = /<span class=\"purchase-item-title\" translate=\"no\">NT\$(.*)<\/span>/g;
     while((info = regexPrice.exec(source)) != null) {
         prices.push(parseInt(info[1].replaceAll(',', '')));
     }
+    
+    //console.log(dates);
+    //console.log(prices);
 
     if (dates.length != prices.length) return false;
     if (dates.length == 0) return false;
@@ -104,8 +108,9 @@ function parseHTML(source) {
 function getSinglePageData(page) {
     let progressMsg = 'progress : ' + page.toString() + ' / ' + totalPage.toString();
     sendProgresstMessage(progressMsg);
-
-    let url = `https://secure.kobobooks.com/${profileID}/Profile/HistoryPurchasesView?page=${page}&sortMethod=datepurchased&ipp=${itemsPerPage}`
+    
+    //https://www.kobo.com/tw/zh/purchasehistory?pageNumber=3&pageSize=50
+    let url = `https://www.kobo.com/tw/zh/purchasehistory?pageNumber=${page}&pageSize=${itemsPerPage}`
 
     $.ajax({
         url: url,

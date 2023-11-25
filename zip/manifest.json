@@ -1,6 +1,6 @@
 {
     "name": "Kobo Expense",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Kob 最近 5 年每月購書金額統計",
     "manifest_version": 3,
     "background": {
