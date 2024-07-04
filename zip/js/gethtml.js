@@ -70,8 +70,8 @@ function parseHTML(source) {
     let dates = [];
     let prices = [];
     
-    //<span class="purchase-item-title" translate="no">2023/4/14</span>
-    let regexDate = /<span class=\"purchase-item-title\" translate=\"no\">([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})<\/span>/g;
+    //<span class="purchase-item-title bold" translate="no">2023/4/14</span>
+    let regexDate = /<span class=\"purchase-item-title.*\" translate=\"no\">([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})<\/span>/g;
     while((info = regexDate.exec(source)) != null) {
         let y = info[1];
         let m = info[2];
@@ -83,8 +83,8 @@ function parseHTML(source) {
         dates.push(`${y}-${m}-${d}`);
     }
     
-    //<span class="purchase-item-title" translate="no">NT$99</span>
-    let regexPrice = /<span class=\"purchase-item-title\" translate=\"no\">NT\$(.*)<\/span>/g;
+    //<span class="purchase-item-title bold" translate="no">NT$99</span>
+    let regexPrice = /<span class=\"purchase-item-title.*\" translate=\"no\">NT\$(.*)<\/span>/g;
     while((info = regexPrice.exec(source)) != null) {
         prices.push(parseInt(info[1].replaceAll(',', '')));
     }
