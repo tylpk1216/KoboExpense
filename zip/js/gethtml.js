@@ -10,8 +10,8 @@ function processData(source) {
     records = [];
 
     // itemsPerPage
-    //<span>顯示： </span><span translate="no">10</span>
-    let regexItems = /<span>顯示： <\/span><span translate=\"no\">(\d+)<\/span>/g;
+    //filter-text">\n\s*<span translate="no">10</span>
+    let regexItems = /filter-text\">\n\s*<span translate=\"no\">(\d+)<\/span>/g;
     while((info = regexItems.exec(source)) != null) {
         itemsPerPage = parseInt(info[1]);
         console.log('in regex loop', itemsPerPage);
