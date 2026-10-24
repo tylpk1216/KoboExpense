@@ -70,8 +70,8 @@ function parseHTML(source) {
     let dates = [];
     let prices = [];
     
-    //<span class="purchase-item-title bold" translate="no">2023/4/14</span>
-    let regexDate = /<span class=\"purchase-item-title.*\" translate=\"no\">([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})<\/span>/g;
+    //<span class="purchase-item-title bold"  translate=no >2025/8/2</span>
+    let regexDate = /<span class=\"purchase-item-title.*\"\s+translate=no\s*>([0-9]{4,4})\/([0-9]{1,})\/([0-9]{1,})<\/span>/g;
     while((info = regexDate.exec(source)) != null) {
         let y = info[1];
         let m = info[2];
@@ -83,14 +83,15 @@ function parseHTML(source) {
         dates.push(`${y}-${m}-${d}`);
     }
     
-    //<span class="purchase-item-title bold" translate="no">NT$99</span>
-    let regexPrice = /<span class=\"purchase-item-title.*\" translate=\"no\">NT\$(.*)<\/span>/g;
+    //<span class="purchase-item-title bold"  translate=no >NT$315</span>
+    let regexPrice = /<span class=\"purchase-item-title.*\"\s+translate=no\s*>NT\$(.*)<\/span>/g;
     while((info = regexPrice.exec(source)) != null) {
+        console.log(info);
         prices.push(parseInt(info[1].replaceAll(',', '')));
     }
     
-    //console.log(dates);
-    //console.log(prices);
+    console.log(dates);
+    console.log(prices);
 
     if (dates.length != prices.length) return false;
     if (dates.length == 0) return false;
@@ -111,6 +112,7 @@ function getSinglePageData(page) {
     
     //https://www.kobo.com/tw/zh/purchasehistory?pageNumber=3&pageSize=50
     let url = `https://www.kobo.com/tw/zh/purchasehistory?pageNumber=${page}&pageSize=${itemsPerPage}`
+    console.log(url);
 
     $.ajax({
         url: url,
